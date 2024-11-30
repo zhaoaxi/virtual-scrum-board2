@@ -23,7 +23,7 @@ public class DBConnect {
         server = "localhost";
         database = "virtual_scrum_board";
         uid = "root";
-        password = "20010214";
+        password = "";
         String connetionString = "jdbc:mysql://"+server+"/"+database+"?user="+uid+"&password="+password;
 
         try{

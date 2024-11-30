@@ -12,19 +12,20 @@ import Enums.InputStatus;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import static Components.Atoms.CustomBtn.createFlatButton;
 import Components.Atoms.CustomTxtBx;
 import Screens.ProjectScreen;
-
 import static Components.Atoms.ThemedText.RegularText;
 import static Util.Validations.Validations.emptyCheck;
 
 public class AddTicket extends javax.swing.JFrame {
+    private Color selectedColor = Colors.secondaryBlue; // Default color
 
     public AddTicket(int projectID) {
         this.setUndecorated(true);
@@ -84,81 +85,104 @@ public class AddTicket extends javax.swing.JFrame {
         ticketDeadlineInputContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
         ticketDeadlineInputContainer.setPreferredSize(new Dimension(245, 48));
         JLabel ticketDeadlineLabel = RegularText("Duration (days)    ", 13);
-        SpinnerNumberModel model = new SpinnerNumberModel(0,
-                                                                0,
-                                                                Integer.MAX_VALUE,
-                                                                1);
+        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
         JSpinner ticketDeadlineInputObj = new JSpinner(model);
         ticketDeadlineInputObj.setEditor(new JSpinner.NumberEditor(ticketDeadlineInputObj, "#"));
         ticketDeadlineInputContainer.add(ticketDeadlineLabel);
         ticketDeadlineInputContainer.add(ticketDeadlineInputObj);
 
+
+
+        // Add color chooser
+        JPanel colorChooserContainer = new JPanel();
+        colorChooserContainer.setBackground(Colors.transparent);
+        colorChooserContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+        colorChooserContainer.setPreferredSize(new Dimension(245, 48));
+        JLabel colorChooserLabel = RegularText("Choose Color", 13);
+
+        JButton chooseColorButton = new JButton("Choose Color");
+        chooseColorButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JColorChooser colorChooser = new JColorChooser();
+                JDialog colorDialog = JColorChooser.createDialog(null, "Pick a Color", true, colorChooser, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        selectedColor = colorChooser.getColor();
+                    }
+                }, null);
+                colorDialog.setVisible(true);
+            }
+        });
         JPanel addBtn = createFlatButton("Add Ticket", Colors.primaryBlue, Colors.darkBlack, 14);
         addBtn.setPreferredSize(new Dimension(245, 28));
         addBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(emptyCheck(ticketNameInputObj.getText())){
+                if (emptyCheck(ticketNameInputObj.getText())) {
                     Messages.fullyCustomError("Task is required.");
-                }
-                else{
+                } else {
                     LocalDate currentDate = LocalDate.now();
                     LocalDate addedDate = currentDate.plusDays(((Number) ticketDeadlineInputObj.getValue()).longValue());
-                    System.out.println(((Number) ticketDeadlineInputObj.getValue()).longValue());
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     String DeadlineDate = addedDate.format(formatter);
-                    System.out.println(addedDate);
                     UserDBActions userDBActions = new UserDBActions();
                     int result = userDBActions.addTicket(ticketNameInputObj.getText(), ticketDescInputObj.getText(), DeadlineDate);
-                    if(result>0){
+                    if (result > 0) {
                         int linkingResult = userDBActions.linkTicketToProject(projectID, result);
-
-                        if(linkingResult>0){
+                        if (linkingResult > 0) {
                             Messages.customSuccessMessage("ticket added");
                             new ProjectScreen(projectID).setVisible(true);
                             dispose();
-                        }
-                        else{
+                        } else {
                             Messages.customFailedMessage("add ticket");
                         }
-                    }
-                    else{
+                    } else {
                         Messages.customFailedMessage("add ticket");
                     }
                 }
             }
         });
 
+        colorChooserContainer.add(colorChooserLabel);
+        colorChooserContainer.add(chooseColorButton);
+
+
+        // 将 dialogBody 的布局设置为 BoxLayout，使组件垂直排列
+        dialogBody.setLayout(new BoxLayout(dialogBody, BoxLayout.Y_AXIS));
+
+// 设置每个输入框和按钮的 preferredSize
+        ticketNameInputContainer.setPreferredSize(new Dimension(245, 48));
+        ticketDescInputContainer.setPreferredSize(new Dimension(245, 48));
+        ticketDeadlineInputContainer.setPreferredSize(new Dimension(245, 48));
+        colorChooserContainer.setPreferredSize(new Dimension(245, 48));
+        addBtn.setPreferredSize(new Dimension(245, 28));
 
         dialogBody.add(ticketNameInputContainer);
         dialogBody.add(ticketDescInputContainer);
         dialogBody.add(ticketDeadlineInputContainer);
+        dialogBody.add(colorChooserContainer);
         dialogBody.add(addBtn);
-
 
         dialogContent.add(topBar, BorderLayout.NORTH);
         dialogContent.add(dialogBody, BorderLayout.SOUTH);
         this.add(dialogContent, BorderLayout.SOUTH);
-
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 300, Short.MAX_VALUE)
         );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 

@@ -141,7 +141,7 @@ public class ProjectScreen extends javax.swing.JFrame {
                                             if(finishedTicketCount>=0) {
                                                 float progress;
                                                 try {
-                                                   progress  = ((float) finishedTicketCount / (float) ticketCount) * 100;
+                                                    progress  = ((float) finishedTicketCount / (float) ticketCount) * 100;
                                                 }
                                                 catch (Exception exception){
                                                     progress = 0;
@@ -162,9 +162,9 @@ public class ProjectScreen extends javax.swing.JFrame {
                                                     catch(JRException e2){
                                                         System.out.println(rootPane+"Error: "+e2.getMessage());
                                                     }
-                                                   catch(NullPointerException e3){
-                                                       System.out.println(rootPane+"Error: "+e3.getMessage());
-                                                   }
+                                                    catch(NullPointerException e3){
+                                                        System.out.println(rootPane+"Error: "+e3.getMessage());
+                                                    }
                                                 }
                                                 else{
                                                     Messages.customFailedMessage("generate report");
@@ -308,24 +308,24 @@ public class ProjectScreen extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 String searchQuery = searchInputObj.getText();
                 ArrayList<Integer> ticketIDs = userDBActions.searchTickets(searchQuery, projectID);
-                    if(ticketIDs==null){
-                        Messages.customFailedMessage("search tickets");
-                    }
-                    else{
-                        int ticketCount=ticketIDs.size();
+                if(ticketIDs==null){
+                    Messages.customFailedMessage("search tickets");
+                }
+                else{
+                    int ticketCount=ticketIDs.size();
 
-                        ticketsList.removeAll();
-                        ticketsList.revalidate();
-                        ticketsList.repaint();
+                    ticketsList.removeAll();
+                    ticketsList.revalidate();
+                    ticketsList.repaint();
 
-                        for(int i=0; i<ticketCount; i++){
-                            JPanel ticket = new TaskCard((ProjectScreen) SwingUtilities.getWindowAncestor(ticketsList), ticketIDs.get(i)).getElement();
-                            ticketsList.add(ticket);
-                        }
-                        ticketsList.setPreferredSize(new Dimension(472, (ticketCount*152)+(16*(ticketCount-1))+32));
-                        ticketsList.revalidate();
-                        ticketsList.repaint();
+                    for(int i=0; i<ticketCount; i++){
+                        JPanel ticket = new TaskCard((ProjectScreen) SwingUtilities.getWindowAncestor(ticketsList), ticketIDs.get(i)).getElement();
+                        ticketsList.add(ticket);
                     }
+                    ticketsList.setPreferredSize(new Dimension(472, (ticketCount*152)+(16*(ticketCount-1))+32));
+                    ticketsList.revalidate();
+                    ticketsList.repaint();
+                }
 
             }
         });
@@ -466,18 +466,17 @@ public class ProjectScreen extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
