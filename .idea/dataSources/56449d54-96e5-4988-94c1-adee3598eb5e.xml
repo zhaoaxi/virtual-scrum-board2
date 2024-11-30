@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="virtual_scrum_board@localhost">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.48">
+    <root id="1">
+      <DefaultCasing>lower/lower</DefaultCasing>
+      <ServerVersion>5.6.15</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="aitest"/>
+    <schema id="3" parent="1" name="bookdb"/>
+    <schema id="4" parent="1" name="echart"/>
+    <schema id="5" parent="1" name="information_schema"/>
+    <schema id="6" parent="1" name="mysql"/>
+    <schema id="7" parent="1" name="performance_schema"/>
+    <schema id="8" parent="1" name="reggie"/>
+    <schema id="9" parent="1" name="servlet"/>
+    <schema id="10" parent="1" name="testdb"/>
+    <schema id="11" parent="1" name="virtual_scrum_board">
+      <Current>1</Current>
+    </schema>
+  </database-model>
+</dataSource>
